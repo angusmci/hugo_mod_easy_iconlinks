@@ -97,7 +97,7 @@ background_color = "#FFEEEE"
 To add the relevant links to the `<head>` of your HTML documents, use the `easy-iconlinks` partial in whatever layouts generate the `<head>` of your document, e.g.
 
 ```
-{{ partial "easy-iconlinks" }}
+{{ partial "easy-iconlinks" . }}
 ```
 
 This will add the following tags to your `<head>`:
