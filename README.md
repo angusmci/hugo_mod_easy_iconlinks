@@ -4,7 +4,7 @@
 
 A small [module](https://gohugo.io/hugo-modules/) for [Hugo](https://gohugo.io/) to simplify adding standard icon links to web pages.
 
-The module generates `site.webmanifest` and `browserconfig.xml` files for your site, and provides a partial layout called `easy-iconlinks` that you can add to your layouts to create appropriate links in the `<head>` of your documents.
+The module generates `site.webmanifest` and `browserconfig.xml` files for your site, and provides partials called `easy-iconlinks` and `easy-browserconfig` that you can add to your layouts to create appropriate links in the `<head>` of your documents.
 
 It does *not* generate or place icons for you. It just creates links.
 
@@ -20,7 +20,7 @@ It does *not* generate or place icons for you. It just creates links.
 
 ## Background
 
-Every website you build with Hugo will probably need `site.webmanifest` and `browserconfig.xml` files, as well as links from your HTML documents to the icons you use. Doing this for each website you build probably involves time-consuming and error-prone copy-pasting. This module simplifies things as much as possible.
+Every website you build with Hugo will probably need `site.webmanifest`, as well as links from your HTML documents to the icons you use. You may also wish to add and link a `browserconfig.xml` file. Doing this for each website you build probably involves time-consuming and error-prone copy-pasting. This module simplifies things as much as possible.
 
 Note that this is designed for simplicity, not flexibility. The 'easy' in the name is there for a reason. If you are developing PWAs or Windows web applications, the `site.webmanifest` and `browserconfig.xml` files created will probably be too simple for you.
 
@@ -103,11 +103,22 @@ To add the relevant links to the `<head>` of your HTML documents, use the `easy-
 This will add the following tags to your `<head>`:
 
 ```
-<link rel="manifest" href="/site.webmanifest" />
-<meta name="msapplication-config" content="/browserconfig.xml" />
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+<link rel="manifest" href="/site.webmanifest" />
+```
+
+If you want a `browserconfig.xml` file, use:
+
+```
+{{ partial "easy-browserconfig" . }}
+```
+
+which will generate:
+
+```
+<meta name="msapplication-config" content="/browserconfig.xml" />
 ```
 
 Between the various files and the `<head>` of your HTML documents, you will end up with links to the following icons:
@@ -118,6 +129,7 @@ Between the various files and the `<head>` of your HTML documents, you will end 
 | /icons/icon.svg             | SVG  | -       | `<head>`            |
 | /icons/apple-touch-icon.png | PNG  | 180x180 | `<head>`            |
 | /icons/icon-192.png         | PNG  | 192x192 | `site.webmanifest`  |
+| /icons/icon-mask.png        | PNG  | 512x512 | `site.webmanifest`  |
 | /icons/icon-512.png         | PNG  | 512x512 | `site.webmanifest`  |
 | /icons/smalltile.png        | PNG  | 70x70   | `browserconfig.xml` |
 | /icons/mediumtile.png       | PNG  | 150x150 | `browserconfig.xml` |
@@ -125,6 +137,10 @@ Between the various files and the `<head>` of your HTML documents, you will end 
 | /icons/widetile.png         | PNG  | 310x150 | `browserconfig.xml` |
 
 To avoid cluttering your weblogs with 404s, you should ensure that appropriate icons exist at each of these locations.
+
+See the notes in Andrey Sitnik’s article about [how to generate maskable icons for Android](https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs#iv-web-app-manifest-with-192192-and-512512-png-icons-for-android-devices).
+
+Earlier versions of this module generated the `browserconfig.xml` link as part of `easy-iconlinks`. It has now been separated out into its own partial, `easy-browserconfig`, on the grounds that web developers may consider `browserconfig.xml` as optional.
 
 ## Maintainers
 
@@ -136,7 +152,7 @@ PRs accepted (but remember that the goal is to keep everything as simple as poss
 
 ## License
 
-MIT © 2022 Angus McIntyre
+MIT © 2022-2026 Angus McIntyre
 
 
 
